@@ -1,0 +1,41 @@
+name: Publish CRM demo
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - examples/chat-first-demo/dist/**
+      - .github/workflows/demo-pages.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: pages
+  cancel-in-progress: false
+
+jobs:
+  package:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/configure-pages@v5
+      # 演示为独立静态站点，上传范围不含后端配置和本机文件。
+      - uses: actions/upload-pages-artifact@v3
+        with:
+          path: examples/chat-first-demo/dist
+
+  deploy:
+    needs: package
+    runs-on: ubuntu-latest
+    permissions:
+      pages: write
+      id-token: write
+    environment:
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+      - name: Deploy demo
+        id: deployment
+        uses: actions/deploy-pages@v4

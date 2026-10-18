@@ -1,0 +1,26 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1200" height="520" viewBox="0 0 1200 520" role="img" aria-label="CRM architecture: Next.js workspace, tenant API, Pi Harness, PostgreSQL, services, and Trace Eval feedback">
+<defs><marker id="arrow" markerWidth="8" markerHeight="8" refX="7" refY="4" orient="auto"><path d="M0 0L8 4L0 8Z" fill="#61829d"/></marker></defs>
+<rect width="1200" height="520" rx="18" fill="#f5f8fb"/>
+<g font-family="Arial,sans-serif"><text x="40" y="46" font-size="22" font-weight="700" fill="#17314a">One business state. Observable execution.</text>
+<text x="40" y="74" font-size="14" fill="#597086">CRM facts → scoped tools → Pi runtime → durable observations → evaluation</text></g>
+<g stroke="#61829d" fill="none" stroke-width="2" marker-end="url(#arrow)"><path d="M244 192H290"/><path d="M490 192H536"/><path d="M775 192H824"/><path d="M390 240V330"/><path d="M655 265V330"/><path d="M938 265V330"/><path d="M824 405H775"/><path d="M536 405H490"/></g>
+<g stroke="#d5dfe8" stroke-width="1.5">
+<rect x="40" y="125" width="204" height="140" rx="14" fill="white"/>
+<rect x="290" y="125" width="200" height="140" rx="14" fill="white"/>
+<rect x="536" y="110" width="239" height="170" rx="14" fill="#e9f7f0" stroke="#8fcdb4"/>
+<rect x="824" y="110" width="332" height="170" rx="14" fill="white"/>
+<rect x="290" y="330" width="200" height="143" rx="14" fill="white"/>
+<rect x="536" y="330" width="239" height="143" rx="14" fill="white"/>
+<rect x="824" y="330" width="332" height="143" rx="14" fill="white"/>
+</g>
+<g font-family="Arial,sans-serif" text-anchor="middle" fill="#19334b" font-size="18" font-weight="700">
+<text x="142" y="166">Workspace</text><text x="390" y="166">Tenant API / MCP</text><text x="655" y="155">Pi Agent + Harness</text><text x="990" y="155">Knowledge &amp; Channels</text>
+<text x="390" y="372">PostgreSQL</text><text x="655" y="372">Worker + Run Events</text><text x="990" y="372">Trace + Evaluation</text></g>
+<g font-family="Arial,sans-serif" text-anchor="middle" fill="#536d83" font-size="14">
+<text x="142" y="197">Next.js · React · SSE</text><text x="142" y="224">Chat / CRM / Approvals</text>
+<text x="390" y="197">Auth · RBAC · Org Scope</text><text x="390" y="224">Zod · Audit · Tool Contracts</text>
+<text x="655" y="188">Context · Budget · Tool Effects</text><text x="655" y="215">Read-only Specialists</text><text x="655" y="242">Human Review · Resume</text>
+<text x="990" y="188">Mem0 · WeKnora · Local RAG</text><text x="990" y="215">WhatsApp / WAHA</text><text x="990" y="242">Feishu Internal Collaboration</text>
+<text x="390" y="404">CRM Facts · RLS · Migrations</text><text x="390" y="434">Source of Truth</text>
+<text x="655" y="404">Queue · Leases · Checkpoints</text><text x="655" y="434">Persisted State · Replay</text>
+<text x="990" y="404">Deterministic Eval · Semantic Judge</text><text x="990" y="434">Langfuse · Regression Cases</text></g></svg>
