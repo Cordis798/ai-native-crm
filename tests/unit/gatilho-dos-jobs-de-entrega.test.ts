@@ -64,6 +64,14 @@ const DIR = join(process.cwd(), ".github/workflows");
  * que desliga um job de entrega fica visível em code review.
  */
 const GATILHO_ESPERADO: Record<string, { condicao: string | null; efeito: string }> = {
+  "demo-pages.yml::package": {
+    condicao: null,
+    efeito: "打包独立静态演示；缺少此步骤就没有可供 GitHub Pages 部署的站点产物，README 的在线演示无法随源码更新。",
+  },
+  "demo-pages.yml::deploy": {
+    condicao: null,
+    efeito: "将已打包的静态产物部署到 GitHub Pages；缺少此步骤，源码更新不会出现在公开演示入口中。",
+  },
   // --- a cadeia que leva o conserto até a VPS ---------------------------------
   "release.yml::abrir-pr-de-release": {
     condicao: "github.event_name == 'workflow_dispatch'",

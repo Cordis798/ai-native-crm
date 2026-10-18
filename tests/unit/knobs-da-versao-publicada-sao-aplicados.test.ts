@@ -26,8 +26,7 @@
  * controle positivo — instrumento que não acha nada devolve verde igual a
  * instrumento que não achou problema.
  */
-import { execFileSync } from "node:child_process";
-import { readFileSync } from "node:fs";
+import { readFileSync, readdirSync } from "node:fs";
 import path from "node:path";
 
 import { describe, expect, it } from "vitest";
@@ -54,19 +53,31 @@ function camposDaConfig(): string[] {
   return [...src.slice(ini, fim).matchAll(/^ {2}(\w+)\??:/gm)].map((m) => m[1]!);
 }
 
-/** Arquivos que leem o campo, fora do próprio módulo que o carrega. */
+interface Fonte {
+  arquivo: string;
+  conteudo: string;
+}
+
+/** 使用 Node 读取源码，避免 CI 缺少外部搜索工具时把扫描失败误判为没有消费者。 */
+function lerFontes(diretorio: string): Fonte[] {
+  return readdirSync(diretorio, { withFileTypes: true }).flatMap((entrada) => {
+    const absoluto = path.join(diretorio, entrada.name);
+    if (entrada.isDirectory()) return lerFontes(absoluto);
+    const arquivo = path.relative(RAIZ, absoluto);
+    if (!entrada.isFile() || !/\.tsx?$/.test(entrada.name) || arquivo.includes("agent-config"))
+      return [];
+    return [{ arquivo, conteudo: readFileSync(absoluto, "utf8") }];
+  });
+}
+
+// 每份源码只读取一次，所有字段检查共用同一份快照；读取失败直接让测试报错。
+const FONTES = ["lib", "workers", "app"].flatMap((pasta) => lerFontes(path.join(RAIZ, pasta)));
+
+/** 查找模块外的字面消费者，保留普通属性读取和可选链两种原有规则。 */
 function consumidoresDe(campo: string): string[] {
-  try {
-    const saida = execFileSync(
-      "rg",
-      ["-l", "-F", "-e", `agentConfig.${campo}`, "-e", `agentConfig?.${campo}`, "--glob", "*.ts", "--glob", "*.tsx", "lib", "workers", "app"],
-      { cwd: RAIZ, encoding: "utf8" },
-    );
-    return saida.split("\n").filter((f) => f !== "" && !f.includes("agent-config"));
-  } catch {
-    // `rg` sai com 1 quando não encontra nada — ausência, não falha.
-    return [];
-  }
+  return FONTES.filter(
+    ({ conteudo }) => conteudo.includes(`agentConfig.${campo}`) || conteudo.includes(`agentConfig?.${campo}`),
+  ).map(({ arquivo }) => arquivo);
 }
 
 describe("knobs da versão publicada", () => {
@@ -76,7 +87,7 @@ describe("knobs da versão publicada", () => {
     expect(campos).toContain("systemPrompt");
     expect(
       consumidoresDe("systemPrompt").length,
-      "nem o system_prompt foi encontrado: o grep não está enxergando o repo",
+      "连 system_prompt 消费者都未找到：源码扫描没有覆盖项目",
     ).toBeGreaterThan(0);
   });
 

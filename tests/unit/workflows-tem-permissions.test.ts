@@ -52,6 +52,10 @@ const DIR = join(process.cwd(), ".github/workflows");
  * acrescente, e acrescentar sem razão é visível em code review.
  */
 const ESCRITA_JUSTIFICADA: Record<string, string> = {
+  "demo-pages.yml::pages: write":
+    "仅部署步骤可以更新本仓库的 GitHub Pages 静态演示，不授予源代码写权限",
+  "demo-pages.yml::id-token: write":
+    "部署步骤使用 OIDC 证明工作流身份，将已打包产物发布到本仓库的 Pages 环境",
   "publish-image.yml::packages: write":
     "publica a imagem do app no GHCR — é o artefato que o self-hoster instala",
   "deploy-vps-develop.yml::packages: write":
