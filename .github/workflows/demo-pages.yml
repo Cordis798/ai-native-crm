@@ -19,7 +19,7 @@ jobs:
   package:
     runs-on: ubuntu-latest
     steps:
-      - uses: actions/checkout@v4
+      - uses: actions/checkout@v7
       - uses: actions/configure-pages@v5
       # 演示为独立静态站点，上传范围不含后端配置和本机文件。
       - uses: actions/upload-pages-artifact@v3
